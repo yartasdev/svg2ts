@@ -1,6 +1,6 @@
 {
   "name": "@yartasdev/svg2ts",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "All svg files in a folder are batch converted into a typescript file.",
   "main": "dist/util.js",
   "bin": {

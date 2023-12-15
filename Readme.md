@@ -12,7 +12,16 @@ npm install @yartasdev/svg2ts
 
 If you want to separate .svg icons by creating more than one .ts file, you can make more than one definition in the svg2ts.config.js file.
 
+```json
+"scripts": {
+  "svg2ts": "svg2ts",
+  "prestart": "npm run svg2ts"
+},
+```
+
 > Note: This library creates .ts files from the .svg files by using the SVGO library.
+
+### Folder Structure
 
 ```
 📦 src
@@ -34,26 +43,44 @@ If you want to separate .svg icons by creating more than one .ts file, you can m
          └─ index.ts
 ```
 
-```javascript
-module.exports = {
-  configs: [
-    {
-      target: 'src/assets/svg/logo',
-      output: 'src/app/svg/logo', 
-      prefix: 'logo',
-      svgo: { // [SVGO Config](https://github.com/svg/svgo)
-        plugins: ['removeDimensions']
-      }
-    },
-    {
-      target: 'src/assets/svg/icons',
-      output: 'src/app/svg/icons', 
-      prefix: 'icon',
-      svgo: { // [SVGO Config](https://github.com/svg/svgo)
-        plugins: ['cleanupAttrs']
-      }
-    }
-  ]
-}
+### Config File 
+`svg2ts.config.js` You can review the [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig#readme) documentation for more information about the config file.
 
+```javascript
+module.exports = [
+  {
+    target: "src/assets/svg/logo",
+    output: "src/app/svg/logo",
+    prefix: "logo",
+    svgo: {
+      // [SVGO Config](https://github.com/svg/svgo)
+      plugins: ["removeDimensions"],
+    },
+  },
+  {
+    target: "src/assets/svg/icons",
+    output: "src/app/svg/icons",
+    prefix: "icon",
+    svgo: {
+      // [SVGO Config](https://github.com/svg/svgo)
+      plugins: ["cleanupAttrs"],
+    },
+  },
+];
+```
+### Output
+
+`./app/svg/logo/index.ts`
+
+```javascript
+export const logoLogo = `<svg>...</svg>`;
+export const logoYoutube = `<svg>...</svg>`;
+export const logoWikipedia = `<svg>...</svg>`;
+```
+
+`./app/svg/icons/index.ts`
+
+```javascript
+export const iconUser = `<svg>...</svg>`;
+export const iconCalendar = `<svg>...</svg>`;
 ```
