@@ -46,6 +46,8 @@ If you want to separate .svg icons by creating more than one .ts file, you can m
 ### Config File 
 `svg2ts.config.js` You can review the [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig#readme) documentation for more information about the config file.
 
+You can use [SVGO](https://github.com/svg/svgo) configs in your config file. 
+
 ```javascript
 module.exports = [
   {
@@ -53,7 +55,6 @@ module.exports = [
     output: "src/app/svg/logo",
     prefix: "logo",
     svgo: {
-      // [SVGO Config](https://github.com/svg/svgo)
       plugins: ["removeDimensions"],
     },
   },
@@ -62,7 +63,6 @@ module.exports = [
     output: "src/app/svg/icons",
     prefix: "icon",
     svgo: {
-      // [SVGO Config](https://github.com/svg/svgo)
       plugins: ["cleanupAttrs"],
     },
   },
