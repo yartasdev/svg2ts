@@ -1,0 +1,47 @@
+{
+  "name": "@yartasdev/svg2ts",
+  "version": "1.2.7",
+  "description": "All svg files in a folder are batch converted into a typescript file.",
+  "main": "dist/util.js",
+  "bin": {
+    "svg2ts": "dist/index.js"
+  },
+  "keywords": [
+    "svg",
+    "svg2ts"
+  ],
+  "scripts": {
+    "start": "tsc --watch",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "prepublish": "npm run build && npm version"
+  },
+  "author": "emreyartas@gmail.com",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "cosmiconfig": "^9.0.0",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.10",
+    "lodash.camelcase": "^4.3.0",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/lodash.camelcase": "^4.3.9"
+  },
+  "peerDependencies": {
+    "svgo": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yartasdev/svg2ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yartasdev/svg2ts.git/issues"
+  },
+  "homepage": "https://github.com/yartasdev/svg2ts.git#readme"
+}
