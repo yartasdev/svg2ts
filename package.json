@@ -13,9 +13,7 @@
   "scripts": {
     "start": "tsc --watch",
     "prebuild": "rm -rf dist",
-    "build": "tsc",
-    "prepublish": "npm run build && npm version patch",
-    "publish": "npm publish --access public"
+    "build": "tsc"
   },
   "author": "emreyartas@gmail.com",
   "license": "ISC",
