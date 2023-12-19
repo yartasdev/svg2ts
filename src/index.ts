@@ -15,6 +15,6 @@ const program = new Command()
     process.cwd()
   );
 
-program.parse();
+program.parse(); 
 
 createSVGWithConfig(program.opts().configDir);

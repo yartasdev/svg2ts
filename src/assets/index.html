@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        font-family: "Roboto", sans-serif;
+        color: white;
+      }
+      html {
+        background: #2f363d;
+      }
+      body {
+        margin: 0;
+        padding: 15px;
+        font-family: var(--bs-body-font-family);
+        font-size: var(--bs-body-font-size);
+        font-weight: var(--bs-body-font-weight);
+        line-height: var(--bs-body-line-height);
+        color: var(--bs-body-color);
+        text-align: var(--bs-body-text-align);
+        background-color: var(--bs-body-bg);
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container-xxl bd-gutter">
+      <div class="d-flex mb-4 mt-4">
+        <h2 id="icons" class="mb-0">Icons</h2>
+        <form class="subnav-search d-flex flex-nowrap ms-auto">
+          <label for="search" class="visually-hidden">Search for icons</label>
+          <input
+            class="form-control search mb-0"
+            id="search"
+            type="search"
+            placeholder="Start typing to filter..."
+            oninput="onSearch(event)"
+          />
+        </form>
+      </div>
+
+      <ul id="content" class="icons row row-cols-4 row-cols-sm-6 row-cols-lg-8 row-cols-xl-10 list-unstyled list"></ul>
+
+      <script>
+
+        function onSearch(event) {
+          const matcher = /\(([^)]+)\)/;
+          const value = event.target.value;
+          const elements = document.querySelectorAll('li.col.mb-4');
+          for(const element of elements) {
+            const name = matcher.exec(element.querySelector('.name').textContent.trim())[1];
+            if(name.includes(value) || value.includes(name) || !value) {
+              element.style.display = 'block';
+            }else {
+              element.style.display = 'none';
+            }
+          }
+        }
+  
+      </script>
+      
+    </main>
+  </body>
+</html>

@@ -1,10 +1,18 @@
 module.exports = [
   {
-    target: 'svg/target',
-    output: 'svg/output', 
-    prefix: 'pg',
+    target: 'svg/target/anron',
+    output: 'svg/output/anron', 
+    prefix: 'ar',
     svgo: {
-      plugins: ['removeDimensions']
+      plugins: [
+        'removeDimensions',
+        {
+          name: "convertColors",
+          params: {
+            currentColor: true,
+          }
+        }
+      ]
     }
   }
 ]

@@ -5,4 +5,10 @@ export interface SVGConfig {
   output: string;
   svgo: Config;
   prefix?: string;
+  preview?: string;
+}
+
+export interface SVGPreview {
+  identifier: string;
+  data: string;
 }

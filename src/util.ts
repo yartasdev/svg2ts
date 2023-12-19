@@ -2,8 +2,10 @@ import { glob } from "glob";
 import { optimize } from "svgo";
 import { join, basename } from "path";
 import camelCase from "lodash.camelcase";
+import kebabCase from "lodash.kebabcase";
 import { cosmiconfigSync } from "cosmiconfig";
-import { SVGConfig } from "./config.interface";
+import { SVGConfig, SVGPreview } from "./config.interface";
+import { JSDOM } from 'jsdom';
 import { outputFileSync, readFileSync } from "fs-extra";
 import { NewLineKind, NodeFlags, ScriptKind, ScriptTarget, Statement, SyntaxKind, VariableStatement, createPrinter, createSourceFile, factory } from "typescript";
 
@@ -19,6 +21,8 @@ export function createSVG(configs: SVGConfig[]) {
     if(!files || !files.length) throw new Error('No .svg file was found in the folder you specified.')
   
     const statements: Statement[] = [];
+
+    const previews: SVGPreview[] = [];
   
     for(const file of files) {
   
@@ -27,14 +31,37 @@ export function createSVG(configs: SVGConfig[]) {
       const { data } = optimize(readFileSync(file, { encoding: 'utf8' }), {...config.svgo}); 
   
       statements.push(createVariableStatement(identifier, data));
+
+      previews.push({identifier, data});
   
     }
+
+    createSVGIconPreview(previews, config);
   
     const content = getPrinter().printFile(factory.updateSourceFile(getSourceFile(), statements));
   
     outputFileSync(join(config.output, 'index.ts'), content, { encoding: 'utf8' });
 
   }
+
+}
+
+export function createSVGIconPreview(previews: SVGPreview[], config: SVGConfig) {
+
+  const { document } = (new JSDOM(readFileSync(join(__dirname, '..', 'src', 'assets', 'index.html'), { encoding: 'utf8' }))).window;
+
+  const container = document.querySelector('#content');
+
+  if(!container) return;
+
+  for(const {identifier, data} of previews) {
+    const wrapper = document.createElement('li');
+    wrapper.setAttribute('class', 'col mb-4');
+    wrapper.innerHTML = createPreviewIconHTML(identifier, data);
+    container.appendChild(wrapper);
+  }
+
+  outputFileSync(join(config.output, 'index.html'), document.documentElement.outerHTML, { encoding: 'utf8' });
 
 }
 
@@ -81,4 +108,12 @@ export function createVariableStatement(identifier: string, content: string): Va
       NodeFlags.Const
     )
   )
+}
+
+export function createPreviewIconHTML(identifier: string, data: string) {
+  return `
+  <div class="d-block text-body-emphasis text-decoration-none">
+    <div class="px-3 py-4 mb-2 bg-body-secondary text-center rounded text-white fill-white">${data}</div>
+    <div class="name text-muted text-decoration-none text-center pt-1">${identifier} (${kebabCase(identifier)})</div>
+  </div>`.trim();
 }
