@@ -16,7 +16,9 @@ export function createSVG(configs: SVGConfig[]) {
     if(!config.target) throw new Error('Please specify a target folder!');
     if(!config.output) throw new Error('Please specify a output folder!'); 
 
-    const files = glob.sync(join(config.target, '**/*.svg'));
+    //const files = glob.sync(join(config.target, '**/*.svg'));
+
+    const files = glob.sync(config.target + '/**/*.svg');
 
     if(!files || !files.length) throw new Error('No .svg file was found in the folder you specified.')
   
