@@ -1,11 +1,11 @@
 import { glob } from "glob";
 import { optimize } from "svgo";
-import { join, basename } from "path";
+import { join, relative } from "path";
 import camelCase from "lodash.camelcase";
 import kebabCase from "lodash.kebabcase";
 import { cosmiconfigSync } from "cosmiconfig";
 import { SVGConfig, SVGPreview } from "./config.interface";
-import { JSDOM } from 'jsdom';
+import { JSDOM } from 'jsdom'; 
 import { outputFileSync, readFileSync } from "fs-extra";
 import { NewLineKind, NodeFlags, ScriptKind, ScriptTarget, Statement, SyntaxKind, VariableStatement, createPrinter, createSourceFile, factory } from "typescript";
 
@@ -14,9 +14,7 @@ export function createSVG(configs: SVGConfig[]) {
   for(const config of configs) {
 
     if(!config.target) throw new Error('Please specify a target folder!');
-    if(!config.output) throw new Error('Please specify a output folder!'); 
-
-    //const files = glob.sync(join(config.target, '**/*.svg'));
+    if(!config.output) throw new Error('Please specify a output folder!');
 
     const files = glob.sync(config.target + '/**/*.svg');
 
@@ -80,21 +78,20 @@ export function createSVGWithConfig(dir: string = process.cwd()) {
 }
 
 export function getIdentifierName(path: string, config: SVGConfig) {
-  const dir = path.replace(/\\/g, "/");
-  const base = config.target.replace(/\\/g, "/");
-  const identifier = `${join(dir.replace(base, "")).split("/").join("-")}`;
-  return camelCase(`${config.prefix ? config.prefix + '-' + basename(identifier, ".svg") : basename(identifier, ".svg")}`);
+  const rel = slash(relative(config.target, path));
+  const identifier = config.prefix ? `${config.prefix}-${identify(rel)}` : `${identify(rel)}`;
+  return camelCase(identifier);
 }
 
-export function getPrinter() {
+function getPrinter() {
   return createPrinter({ newLine: NewLineKind.LineFeed });
 }
 
-export function getSourceFile(name = 'index.ts') {
+function getSourceFile(name = 'index.ts') {
   return createSourceFile(name, '', ScriptTarget.Latest, false, ScriptKind.TS)
 }
 
-export function createVariableStatement(identifier: string, content: string): VariableStatement { 
+function createVariableStatement(identifier: string, content: string): VariableStatement { 
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     factory.createVariableDeclarationList(
@@ -112,10 +109,20 @@ export function createVariableStatement(identifier: string, content: string): Va
   )
 }
 
-export function createPreviewIconHTML(identifier: string, data: string) {
+function createPreviewIconHTML(identifier: string, data: string) {
   return `
   <div class="d-block text-body-emphasis text-decoration-none">
     <div class="px-3 py-4 mb-2 bg-body-secondary text-center rounded text-white fill-white">${data}</div>
     <div class="name text-muted text-decoration-none text-center pt-1">${identifier} (${kebabCase(identifier)})</div>
   </div>`.trim();
+}
+
+function slash(path: string) {
+  const isExtendedLengthPath = path.startsWith('\\\\?\\');
+	if (isExtendedLengthPath) return path;
+	return path.replace(/\\/g, '/');
+}
+
+function identify(path: string) {
+  return (path.substring(0, path.lastIndexOf('.')) || path).split('/').join('-')
 }
