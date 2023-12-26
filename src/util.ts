@@ -2,7 +2,6 @@ import { glob } from "glob";
 import { optimize } from "svgo";
 import { join, relative } from "path";
 import camelCase from "lodash.camelcase";
-import kebabCase from "lodash.kebabcase";
 import { cosmiconfigSync } from "cosmiconfig";
 import { SVGConfig, SVGPreview } from "./config.interface";
 import { JSDOM } from 'jsdom'; 
@@ -113,7 +112,7 @@ function createPreviewIconHTML(identifier: string, data: string) {
   return `
   <div class="d-block text-body-emphasis text-decoration-none">
     <div class="px-3 py-4 mb-2 bg-body-secondary text-center rounded text-white fill-white">${data}</div>
-    <div class="name text-muted text-decoration-none text-center pt-1">${identifier} (${kebabCase(identifier)})</div>
+    <div class="name text-muted text-decoration-none text-center pt-1">${identifier}</div>
   </div>`.trim();
 }
 

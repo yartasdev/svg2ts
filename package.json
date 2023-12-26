@@ -1,6 +1,6 @@
 {
   "name": "@yartasdev/svg2ts",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "All svg files in a folder are batch converted into a typescript file.",
   "main": "dist/util.js",
   "bin": {
@@ -27,15 +27,12 @@
     "glob": "^10.3.10",
     "jsdom": "^23.0.1",
     "lodash.camelcase": "^4.3.0",
-    "lodash.kebabcase": "^4.1.1",
-    "slash": "^5.1.0",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/jsdom": "^21.1.6",
-    "@types/lodash.camelcase": "^4.3.9",
-    "@types/lodash.kebabcase": "^4.1.9"
+    "@types/lodash.camelcase": "^4.3.9"
   },
   "peerDependencies": {
     "svgo": "^3.1.0"
