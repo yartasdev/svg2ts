@@ -80,7 +80,9 @@ export function createSVGWithConfig(dir: string = process.cwd()) {
 }
 
 export function getIdentifierName(path: string, config: SVGConfig) {
-  const identifier = `${join(path.replace(config.target, "")).split("/").join("-")}`;
+  const dir = path.replace(/\\/g, "/");
+  const base = config.target.replace(/\\/g, "/");
+  const identifier = `${join(dir.replace(base, "")).split("/").join("-")}`;
   return camelCase(`${config.prefix ? config.prefix + '-' + basename(identifier, ".svg") : basename(identifier, ".svg")}`);
 }
 
